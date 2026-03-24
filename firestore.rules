@@ -1,0 +1,35 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'xp', 'level']) &&
+             data.uid is string &&
+             data.xp is int &&
+             data.level is int;
+    }
+
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create, update: if isOwner(userId) && isValidUser(request.resource.data);
+      
+      match /checkins/{checkinId} {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId);
+      }
+    }
+
+    match /places/{placeId} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Only admin (manual) can write places for now
+    }
+  }
+}

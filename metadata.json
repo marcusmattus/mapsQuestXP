@@ -1,0 +1,5 @@
+{
+  "name": "MapQuest XP",
+  "description": "A gamified Google Maps experience where walking and visiting places earns you XP, levels, and rewards.",
+  "requestFramePermissions": ["geolocation"]
+}

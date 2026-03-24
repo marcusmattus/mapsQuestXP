@@ -1,0 +1,65 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "User's gamification stats and profile info",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "xp": { "type": "integer" },
+        "level": { "type": "integer" },
+        "points": { "type": "integer" },
+        "streak": { "type": "integer" },
+        "totalSteps": { "type": "integer" },
+        "lastActive": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "xp", "level"]
+    },
+    "Place": {
+      "title": "Place",
+      "description": "A destination on the map",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "lat": { "type": "number" },
+        "lng": { "type": "number" },
+        "rewardXP": { "type": "integer" },
+        "rewardPoints": { "type": "integer" },
+        "radius": { "type": "integer" },
+        "description": { "type": "string" }
+      },
+      "required": ["id", "name", "lat", "lng"]
+    },
+    "CheckIn": {
+      "title": "Check-In",
+      "description": "Record of a user visiting a place",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "placeId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "xpAwarded": { "type": "integer" }
+      },
+      "required": ["id", "userId", "placeId", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile documents"
+    },
+    "/places/{placeId}": {
+      "schema": "Place",
+      "description": "Global places to visit"
+    },
+    "/users/{userId}/checkins/{checkinId}": {
+      "schema": "CheckIn",
+      "description": "User's visit history"
+    }
+  }
+}
